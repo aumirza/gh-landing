@@ -1,7 +1,7 @@
 
 # Gh landing
 
-A simple landing page for your github project.
+A simple landing page for all your github project.
 
 # Features
 
