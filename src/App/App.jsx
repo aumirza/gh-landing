@@ -4,7 +4,7 @@ import { Header } from "../components/Header";
 import { Profile } from "../components/Profile";
 import { RepoCard } from "../components/RepoCard";
 import { reposUrl, profileUrl } from "../constants";
-import Search from "../components/Search";
+import { Search } from "../components/Search";
 
 export function App() {
   const [repos, setRepos] = useState([]);

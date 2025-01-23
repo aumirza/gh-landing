@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import Fuse from "fuse.js";
 
 const SearchIcon = ({ className }) => (
   <svg
@@ -17,14 +18,14 @@ const SearchIcon = ({ className }) => (
   </svg>
 );
 
-const CloseIcon = () => (
+const CloseIcon = ({ className }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
     strokeWidth={1.5}
+    className={className}
     stroke="currentColor"
-    className="size-4 h-4 w-4"
   >
     <path
       strokeLinecap="round"
@@ -34,14 +35,25 @@ const CloseIcon = () => (
   </svg>
 );
 
-const Search = ({ repos, setFilteredRepos }) => {
+export const Search = ({ repos, setFilteredRepos }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const queryChange = (e) => {
+  const fuse = useMemo(
+    () =>
+      new Fuse(repos, {
+        keys: ["name"],
+        includeScore: true,
+        threshold: 0.3,
+        distance: 5,
+      }),
+    [repos]
+  );
+
+  const queryChangeHandler = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const clearSearch = () => {
+  const clearSearchHandler = () => {
     setSearchTerm("");
   };
 
@@ -53,30 +65,30 @@ const Search = ({ repos, setFilteredRepos }) => {
       return;
     }
 
-    let filteredRepos = repos.filter((repo) =>
-      repo.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const result = fuse.search(searchTerm);
+    const filteredRepos = result.map((result) => result.item);
+    // let filteredRepos = repos.filter((repo) =>
+    //   repo.name.toLowerCase().includes(searchTerm.toLowerCase())
+    // );
     setFilteredRepos(filteredRepos);
-  }, [searchTerm, repos, setFilteredRepos]);
+  }, [searchTerm, repos, setFilteredRepos, fuse]);
 
   return (
-    <div className="border-b-2 focus-within:border-b-black flex my-5 transition-all">
-      <SearchIcon className="h-5 w-5" />
+    <div className="border-b-2 focus-within:border-b-black flex gap-1 pb-2 my-5 transition-all">
+      <SearchIcon className="h-6 w-6" />
       <input
         type="text"
-        className="outline-none"
-        onChange={queryChange}
+        className="outline-none bg-transparent"
+        onChange={queryChangeHandler}
         value={searchTerm}
       />
-      {searchTerm !== "" ? (
-        <button onClick={clearSearch}>
-          <CloseIcon />
-        </button>
-      ) : (
-        ""
-      )}
+
+      <button
+        className={searchTerm ? "opacity-100" : "opacity-0"}
+        onClick={clearSearchHandler}
+      >
+        <CloseIcon className="h-6 w-6" />
+      </button>
     </div>
   );
 };
-
-export default Search;
