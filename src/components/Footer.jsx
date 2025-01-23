@@ -3,7 +3,7 @@ import { FaGithub } from "react-icons/fa";
 
 export const Footer = () => {
   return (
-    <div className="py-5 flex flex-col items-center">
+    <div className="py-5 flex flex-col gap-2 items-center">
       <p className=" text-gray-500 text-xs">
         &copy; {new Date().getFullYear()}. All rights reserved.
       </p>
@@ -15,16 +15,16 @@ export const Footer = () => {
           rel="noreferrer"
           className="peer"
         >
-          <FaGithub className="text-4xl md:text-5xl  text-gray-600 hover:text-black" />
+          <FaGithub className="text-4xl md:text-5xl dark:text-white  text-gray-600 hover:text-black" />
         </a>
-        <span className="bg-slate-300 p-2 rounded-md border-2 hidden peer-hover:block">
-          Like this, make yours too
+        <span className="bg-slate-300 dark:bg-slate-700 p-2 rounded-md border-2 hidden peer-hover:block">
+          Like this ?? make yours too..
         </span>
       </div>
 
       <div className="">
         <span> made with ❤️ by </span>
-        <a href="https://gh.ahmadullah.in" className="text-blue-500">
+        <a href="https://gh.ahmadullah.in" className="text-blue-500 underline">
           @aumirza
         </a>
       </div>
