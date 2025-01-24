@@ -1,8 +1,14 @@
+<p align="center">
+  <img src="public/dev-gallery.png" alt="DevGallery" height="200" />
+</p>
+
 # DevGallery
 
-A gallery for developers by developers.
+**A gallery for developers by developers.**
 
 DevGallery is your digital gallery for showcasing and discovering GitHub repositories. With an interactive card layout, you can explore the source code and live versions of projects effortlessly, all in one place.
+
+---
 
 # Features
 
@@ -15,6 +21,51 @@ DevGallery is your digital gallery for showcasing and discovering GitHub reposit
 
 - [x] add icons
 - [x] add profile stats
+
+## 🌐 View Live
+
+[DevGallery Ahmadullah mirza](https://gh.ahmadullah.in/)
+
+---
+
+## ✨ Highlights
+
+- Showcases repositories with their source code and live links.
+- Interactive and visually appealing card layout.
+- Optimized for fast performance.
+
+---
+
+## 🛠️ Tech Stack
+
+- **[React](https://reactjs.org/)**: For building the user interface.
+- **[Vite](https://vitejs.dev/)**: For fast and efficient development builds.
+
+---
+
+## 📚 Lessons Learned
+
+---
+
+## 🚀 Optimizations
+
+- Utilized **localStorage** for caching user location data, reducing unnecessary API calls.
+- - Enhanced UI responsiveness for various screen sizes.
+
+---
+
+## 📄 Available Scripts
+
+```bash
+# Start the development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview the production build
+npm run preview
+```
 
 # How to deploy
 
