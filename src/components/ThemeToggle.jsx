@@ -1,11 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiMoon, FiSun } from "react-icons/fi";
 
 export const ThemeToggle = () => {
-  const [darkMode, setDarkMode] = useState(false);
+  const [darkMode, setDarkMode] = useState(
+    window.matchMedia("(prefers-color-scheme: dark)").matches
+  );
 
-  const darkModeHandler = (e) => {
-    setDarkMode((darkMode) => !darkMode);
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = (e) => {
+      setDarkMode(e.matches);
+      document.documentElement.classList.toggle("dark", e.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+    document.documentElement.classList.toggle("dark", darkMode);
+
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  const darkModeHandler = () => {
+    setDarkMode((prevMode) => !prevMode);
     document.documentElement.classList.toggle("dark");
   };
 
