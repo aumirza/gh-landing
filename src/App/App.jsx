@@ -3,46 +3,74 @@ import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { Profile } from "../components/Profile";
 import { RepoCard } from "../components/RepoCard";
-import { reposUrl, profileUrl } from "../constants";
 import { Search } from "../components/Search";
+import ProfileStats from "../components/ProfileStats";
+import { Pagination } from "../components/Pagination";
+import Sort from "../components/Sort";
+import { fetchAllRepos, fetchProfile } from "../utils/api";
 
 function App() {
+  const ITEMS_PER_PAGE = 6;
   const [repos, setRepos] = useState([]);
   const [profile, setProfile] = useState();
   const [filteredRepos, setFilteredRepos] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+  const [pageCount, setPageCount] = useState(1);
+  const [sortBy, setSortBy] = useState("updated");
+  const [sortOrder, setSortOrder] = useState("desc");
 
-  const fetchRepos = async () => {
-    const response = await fetch(reposUrl);
-    const data = await response.json();
-    data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    setRepos(data);
+  const initializeData = async () => {
+    const profileData = await fetchProfile();
+    setProfile(profileData);
+
+    const reposData = await fetchAllRepos();
+    setRepos(reposData);
+    setFilteredRepos(reposData);
   };
 
   useEffect(() => {
-    fetch(profileUrl)
-      .then((response) => response.ok && response.json())
-      .then((json) => setProfile(json));
-
-    fetchRepos();
+    initializeData();
   }, []);
 
   return (
     <div className="relative flex flex-col min-h-screen gap-5 dark:bg-slate-800 dark:text-white">
       <Header />
-      <div className="flex flex-col items-center justify-center flex-grow pt-20">
-        <div className="flex flex-col items-center">
+      <div className="container flex flex-col items-center justify-center flex-grow max-w-6xl gap-8 px-4 pt-20 mx-auto mt-5 md:mt-10">
+        <div className="w-full max-w-3xl mx-auto">
           {profile ? <Profile profile={profile} /> : <p>Loading...</p>}
-          <Search repos={repos} setFilteredRepos={setFilteredRepos} />
         </div>
-        <div className="flex-grow">
-          {!repos.length ? <p>Loading...</p> : ""}
-          {repos.length && filteredRepos.length === 0 ? (
-            <p>No repositories found.</p>
+        <div className="w-full max-w-4xl mx-auto">
+          <ProfileStats profile={profile} repos={repos} />
+        </div>
+        <div className="flex flex-col items-center justify-center w-full max-w-4xl gap-4 mx-auto sm:flex-row">
+          <div className="flex items-center justify-center w-full sm:flex-1">
+            <Search
+              repos={repos}
+              setFilteredRepos={setFilteredRepos}
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+            />
+          </div>
+          <Sort
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
+        </div>
+        {/* <div className="flex items-center justify-center w-full sm:flex-1">
+          <p className="text-lg text-center">
+            Showing {filteredRepos.length} repos
+          </p>
+        </div> */}
+        <div className="w-full max-w-6xl mx-auto">
+          {!repos.length ? (
+            <p className="text-center">Loading...</p>
+          ) : filteredRepos.length === 0 ? (
+            <p className="text-lg text-center">No repositories found.</p>
           ) : (
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3 md:gap-10">
+            <div className="grid grid-cols-1 gap-5 auto-rows-fr md:grid-cols-2 lg:grid-cols-3">
               {filteredRepos
-                .slice(0, showAll ? repos.length : 6)
+                .slice(0, pageCount * ITEMS_PER_PAGE)
                 .map((repo) => (
                   <RepoCard key={repo.id} repo={repo} />
                 ))}
@@ -50,14 +78,12 @@ function App() {
           )}
         </div>
       </div>
-      <div className="flex justify-center mt-5">
-        <button
-          onClick={() => setShowAll(!showAll)}
-          className="p-2 px-5 transition-all duration-150 ease-in-out border-2 border-gray-800 rounded-full dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-gray-800 hover:bg-gray-800 hover:text-white"
-        >
-          {showAll ? "Show less" : "Show more"}
-        </button>
-      </div>
+      <Pagination
+        itemsLength={filteredRepos.length}
+        pageCount={pageCount}
+        setPageCount={setPageCount}
+        itemsPerPage={ITEMS_PER_PAGE}
+      />
       <Footer />
     </div>
   );
