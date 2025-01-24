@@ -16,7 +16,7 @@ export default function RepoImage({ repo }) {
 
   return image ? (
     <img
-      className="object-contain w-full rounded-lg bg-slate-50"
+      className="object-contain w-full h-full rounded-lg bg-slate-50"
       src={image}
       alt=""
     />
