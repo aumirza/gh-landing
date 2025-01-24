@@ -10,10 +10,10 @@ on:
     #   - ".github/workflows/main.yml"
     #paths-ignore:
     #  - '**/README.md'
-    
+
   pull_request:
     branches: ["main"]
-  
+
   pull_request_target:
 
   workflow_dispatch:
@@ -41,4 +41,4 @@ jobs:
         with:
           token: ${{ secrets.TOKEN || secrets.GITHUB_TOKEN  }}
           repository-name: ${{ secrets.REPO_NAME || github.repository}}
-          folder: build # The folder the action should deploy.
+          folder: dist # The folder the action should deploy.
