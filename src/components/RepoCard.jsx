@@ -1,57 +1,98 @@
 import { useMemo } from "react";
-import { FaCode, FaGithub, FaLink } from "react-icons/fa";
+import {
+  FaCode,
+  FaGithub,
+  FaStar,
+  FaCodeBranch,
+  FaEye,
+  FaBalanceScale,
+} from "react-icons/fa";
 import RepoImage from "./RepoImage";
 
 export const RepoCard = ({ repo }) => {
-  const date = useMemo(() => new Date(repo.created_at), [repo.created_at]);
+  const createdDate = useMemo(
+    () => new Date(repo.created_at),
+    [repo.created_at]
+  );
+  const updatedDate = useMemo(
+    () => new Date(repo.updated_at),
+    [repo.updated_at]
+  );
 
   return (
-    <div className="relative flex flex-col gap-5 p-5 text-gray-800 transition-all duration-100 ease-in-out bg-gray-200 shadow w-80 rounded-3xl hover:shadow-xl dark:bg-gray-300 hover:-translate-y-1">
-      <div className="rounded-md shadow overflow-clip">
+    <div className="flex flex-col w-full gap-4 p-5 transition-all duration-300 bg-gray-200 border rounded-2xl dark:bg-slate-900 hover:shadow-lg hover:-translate-y-1 border-gray-100/10 dark:border-slate-800">
+      <div className="relative overflow-hidden rounded-xl aspect-video">
         <RepoImage repo={repo} />
-      </div>
-      <div className="flex flex-col justify-center flex-grow gap-2 p-2 pt-1">
-        <div className="mb-1 text-xl font-medium text-center md:text-2xl">
-          {repo.name}
-        </div>
-        <div className="flex flex-col flex-grow gap-1">
-          <div className="text-sm">{repo.description}</div>
-          <div className="text-sm italic font-semibold text-center">
-            {`${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`}
-          </div>
-          {/* <div className="flex items-center justify-between">
-            <div className="flex items-center my-1">
-              <img
-                className="w-5 h-5 mr-1 rounded-full"
-                src={repo.owner.avatar_url}
-                alt="avatar"
-              />
-              <a
-                className="underline"
-                href={repo.owner.html_url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {repo.owner.login}
-              </a>
-            </div>
-          </div> */}
-          {repo.language ? (
-            <div className="flex items-center justify-center">
-              <FaCode className="mr-2 text-sm" />
-              <div className="text-sm text-center">{repo.language}</div>
-            </div>
-          ) : null}
-        </div>
-        <div className="flex justify-between w-full">
-          <a className="underline" href={repo.html_url}>
-            <FaGithub className="text-3xl duration-150 hover:scale-125" />
+        <div className="absolute flex gap-2 top-2 right-2">
+          <a
+            href={repo.html_url}
+            className="p-2 text-gray-700 rounded-full bg-gray-200/90 hover:bg-gray-100 dark:bg-slate-800/90 dark:text-gray-300 dark:hover:bg-slate-700"
+            title="View on GitHub"
+          >
+            <FaGithub className="w-5 h-5" />
           </a>
-          {repo.homepage ? (
-            <a className="underline" href={repo.homepage}>
-              <FaLink className="text-2xl duration-150 hover:scale-125" />
+          {repo.homepage && (
+            <a
+              href={repo.homepage}
+              className="p-2 text-gray-700 rounded-full bg-gray-200/90 hover:bg-gray-100 dark:bg-slate-800/90 dark:text-gray-300 dark:hover:bg-slate-700"
+              title="Live Preview"
+            >
+              <FaEye className="w-5 h-5" />
             </a>
-          ) : null}
+          )}
+          {repo.archived && (
+            <span className="px-2 py-1 text-xs font-medium text-yellow-800 bg-yellow-200 rounded-full">
+              Archived
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <h3 className="text-xl font-semibold text-gray-900 break-words dark:text-white">
+          {repo.name}
+        </h3>
+
+        <p className="text-sm text-gray-600 dark:text-gray-300">
+          {repo.description || "No description provided"}
+        </p>
+
+        <div className="grid grid-cols-3 gap-2 p-2 text-sm bg-gray-300 rounded-xl dark:bg-slate-800">
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+            <FaStar className="w-4 h-4" />
+            <span>{repo.stargazers_count}</span>
+          </div>
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+            <FaCodeBranch className="w-4 h-4" />
+            <span>{repo.forks_count}</span>
+          </div>
+          <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+            <FaEye className="w-4 h-4" />
+            <span>{repo.watchers_count}</span>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-2 pt-3 border-t border-gray-100 dark:border-slate-800">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {repo.language && (
+                <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                  <FaCode className="w-4 h-4" />
+                  <span>{repo.language}</span>
+                </div>
+              )}
+              {repo.license && (
+                <div className="flex items-center gap-1 text-sm text-gray-600 dark:text-gray-400">
+                  <FaBalanceScale className="w-4 h-4" />
+                  <span className="hidden sm:inline">{repo.license.name}</span>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400">
+            <span>Created: {createdDate.toLocaleDateString()}</span>
+            <span>Updated: {updatedDate.toLocaleDateString()}</span>
+          </div>
         </div>
       </div>
     </div>
