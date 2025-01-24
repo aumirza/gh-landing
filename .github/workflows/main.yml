@@ -34,7 +34,7 @@ jobs:
           npm ci
           npm run build
         env:
-          REACT_APP_GITHUB_USERNAME: ${{ github.actor }}
+          VITE_GITHUB_USERNAME: ${{ github.actor }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4.6.1
