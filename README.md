@@ -1,6 +1,8 @@
-# Gh landing
+# DevGallery
 
-A simple landing page for all your github project.
+A gallery for developers by developers.
+
+DevGallery is your digital gallery for showcasing and discovering GitHub repositories. With an interactive card layout, you can explore the source code and live versions of projects effortlessly, all in one place.
 
 # Features
 
@@ -11,8 +13,8 @@ A simple landing page for all your github project.
 
 # TODO
 
-- [ ] add icons
-- [ ] add profile stats
+- [x] add icons
+- [x] add profile stats
 
 # How to deploy
 
