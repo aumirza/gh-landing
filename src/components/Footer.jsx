@@ -3,28 +3,33 @@ import { FaGithub } from "react-icons/fa";
 
 export const Footer = () => {
   return (
-    <div className="py-5 flex flex-col gap-2 items-center">
-      <p className=" text-gray-500 text-xs">
+    <div className="flex flex-col items-center gap-3 py-8 shadow-inner bg-gradient-to-r from-gray-50 to-gray-100 dark:from-slate-900 dark:to-slate-800">
+      <p className="text-sm text-gray-600 dark:text-gray-400">
         &copy; {new Date().getFullYear()}. All rights reserved.
       </p>
 
-      <div className="group fixed w-full right-10 bottom-10 md:right-14 md:bottom-14 flex flex-row-reverse gap-2">
+      <div className="fixed flex flex-row-reverse w-full gap-3 group right-10 bottom-10 md:right-14 md:bottom-14">
         <a
           href="https://github.com/aumirza/gh-landing"
           target="_blank"
           rel="noreferrer"
-          className="peer"
+          className="transition-transform peer hover:scale-110"
         >
-          <FaGithub className="text-4xl md:text-5xl dark:text-white  text-gray-600 hover:text-black" />
+          <FaGithub className="text-4xl text-gray-700 transition-colors md:text-5xl dark:text-gray-300 hover:text-black dark:hover:text-white" />
         </a>
-        <span className="bg-slate-300 dark:bg-slate-700 p-2 rounded-md border-2 hidden peer-hover:block">
-          Like this ?? make yours too..
+        <span className="hidden p-3 transition-all transform bg-white rounded-lg shadow-lg dark:bg-slate-700 peer-hover:block">
+          Like this? Make yours too!
         </span>
       </div>
 
-      <div className="">
-        <span> made with ❤️ by </span>
-        <a href="https://gh.ahmadullah.in" className="text-blue-500 underline">
+      <div className="text-gray-600 dark:text-gray-400">
+        <span>Made with </span>
+        <span className="inline-block animate-pulse">❤️</span>
+        <span> by </span>
+        <a
+          href="https://gh.ahmadullah.in"
+          className="text-blue-500 underline transition-colors hover:text-blue-700 dark:hover:text-blue-400"
+        >
           @aumirza
         </a>
       </div>
