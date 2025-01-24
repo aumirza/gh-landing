@@ -1,19 +1,13 @@
 export function extractImages(markdown) {
-  // images can be in html or mardown format
-  const imageRegex = /!\[.*?\]\((.*?)\)/g; // Match Markdown image syntax
-  const htmlImageRegex = /<img.*?src="(.*?)".*?>/g; // Math Html img
-
+  // Match both Markdown and HTML images in a single regex
+  const combinedRegex = /(?:!\[.*?\]\((.*?)\)|<img.*?src="(.*?)".*?>)/g;
   const images = [];
   let match;
 
-  while ((match = imageRegex.exec(markdown)) !== null) {
-    let imageUrl = match[1];
-    images.push(imageUrl); // Extract image URL
-  }
-
-  while ((match = htmlImageRegex.exec(markdown)) !== null) {
-    let imageUrl = match[1];
-    images.push(imageUrl); // Extract image URL
+  while ((match = combinedRegex.exec(markdown)) !== null) {
+    // match[1] will contain Markdown URL, match[2] will contain HTML URL
+    const imageUrl = match[1] || match[2];
+    images.push(imageUrl);
   }
 
   return images;
