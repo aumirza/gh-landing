@@ -1,20 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { getOpenGraphImage } from "../utils/OpenGraph";
-import { fetchReadme } from "../utils/fetchReadme";
-import { extractImages } from "../utils/markdown";
+import { fetchRepoImage } from "../utils/fetchRepoImage";
 
 export default function RepoImage({ repo }) {
   const [image, setImage] = useState(null);
 
   const getImage = useCallback(async () => {
-    const readme = fetchReadme(repo.html_url);
-    if (readme) {
-      const images = extractImages(readme);
-      if (images.length > 0) {
-        return setImage(images[0]);
-      }
-    }
-    const image = await getOpenGraphImage(repo.html_url);
+    const image = await fetchRepoImage(repo);
     setImage(image);
   }, [repo.html_url]);
 
@@ -24,6 +15,10 @@ export default function RepoImage({ repo }) {
   }, [repo.html_url, image, getImage]);
 
   return image ? (
-    <img className="w-full rounded-lg h-36" src={image} alt="" />
+    <img
+      className="object-contain w-full rounded-lg bg-slate-50"
+      src={image}
+      alt=""
+    />
   ) : null;
 }
